@@ -7,8 +7,8 @@ public class FloorManager : MonoBehaviour
     [SerializeField] int floorAmount;
     [SerializeField] GameObject floorObject;
     [SerializeField] GameObject floorHolder;
+    [SerializeField] EnemyManager enemyManager;
     public List<GameObject> floorList;
-    //[SerializeField] FloorSpawn floorSpawn;
     [SerializeField] GameObject player;
     public int currentFloor;
 
@@ -32,19 +32,21 @@ public class FloorManager : MonoBehaviour
 
     public void Ascend()
     {
-        if (floorAmount == currentFloor)
+        if (floorAmount > currentFloor)
         {
             currentFloor++;
-            player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.position;
+            player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
+            enemyManager.EnemyDeath(GameObject.FindWithTag("Enemy"));
         }
     }
     
     public void Descend()
     {
-        if (currentFloor == 0)
+        if (currentFloor > 0)
         {
             currentFloor--;
-            player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.position;
+            player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
+            enemyManager.EnemyDeath(GameObject.FindWithTag("Enemy"));
         }
     }
 }

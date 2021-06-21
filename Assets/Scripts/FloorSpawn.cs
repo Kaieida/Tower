@@ -8,6 +8,6 @@ public class FloorSpawn : MonoBehaviour
     [SerializeField] RoomType roomType;
     public Transform floorBottom;
     public Transform floorTop;
-    public Transform placeForPlayer;
+    public GameObject placeForPlayer;
     public Transform placeForEnemy;
 }

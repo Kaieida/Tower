@@ -9,14 +9,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] Slider healthSlider;
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject mainCanvas;
-    private FloorManager floorManager;
+    [SerializeField] FloorManager floorManager;
 
     private int currentHealth;
-
-    private void Start()
-    {
-        floorManager = GameObject.FindWithTag("MainFloor").GetComponent<FloorManager>();
-    }
 
     public void TakeDamage(int damageTaken, GameObject gameObject)
     {
@@ -35,12 +30,7 @@ public class EnemyManager : MonoBehaviour
         currentHealth = monsterHealth;
     }
 
-    /*public void OnMouseDown()
-    {
-        TakeDamage(playerStats.damage);
-    }*/
-
-    private void EnemyDeath(GameObject obj)
+    public void EnemyDeath(GameObject obj)
     {
         //floorManager.Ascend();
         Destroy(obj);
