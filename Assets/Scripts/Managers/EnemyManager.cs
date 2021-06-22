@@ -10,7 +10,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject mainCanvas;
     [SerializeField] FloorManager floorManager;
+    [SerializeField] ButtonManager buttonManager;
 
+    public int maxCompletedLevel;
     private int currentHealth;
 
     public void TakeDamage(int damageTaken, GameObject gameObject)
@@ -32,13 +34,24 @@ public class EnemyManager : MonoBehaviour
 
     public void EnemyDeath(GameObject obj)
     {
-        //floorManager.Ascend();
+        MaxCompletedLevel(obj.GetComponent<EnemyController>().enemyFloor+ 2);
+        buttonManager.UpdateButtons();
+        Debug.Log(obj.GetComponent<EnemyController>().enemyFloor);
         Destroy(obj);
         SpawnNewEnemy();
     }
 
     private void SpawnNewEnemy()
     {
-        Instantiate(enemyPrefab, floorManager.floorList[floorManager.currentFloor].GetComponent<FloorSpawn>().placeForEnemy.position, Quaternion.identity,mainCanvas.transform);
+        GameObject enemy = Instantiate(enemyPrefab, floorManager.floorList[floorManager.currentFloor].GetComponent<FloorSpawn>().placeForEnemy.position, Quaternion.identity,mainCanvas.transform);
+        enemy.GetComponent<EnemyController>().enemyFloor = floorManager.currentFloor;
+    }
+
+    public void MaxCompletedLevel(int floorLevel)
+    {
+        if(floorLevel > maxCompletedLevel)
+        {
+            maxCompletedLevel = floorLevel;
+        }
     }
 }

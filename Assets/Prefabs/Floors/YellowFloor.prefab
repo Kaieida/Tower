@@ -287,7 +287,7 @@ MonoBehaviour:
   floorTop: {fileID: 1033884138974877252}
   placeForPlayer: {fileID: 2841398517983894877}
   placeForEnemy: {fileID: 7479867194942313137}
-  floorAmount: 1
+  floorAmount: 4
 --- !u!1 &2229347171859924414
 GameObject:
   m_ObjectHideFlags: 0

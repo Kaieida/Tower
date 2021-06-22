@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    [SerializeField] GameObject floorObject;
     [SerializeField] GameObject floorHolder;
     [SerializeField] EnemyManager enemyManager;
     [SerializeField] Transform floorStart;
     [SerializeField] List<GameObject> allFloors;
-    public List<GameObject> floorList;
     [SerializeField] GameObject player;
     [SerializeField] int loopAmounts;
+
+    public List<GameObject> floorList;
     public int currentFloor;
+    //public int levelsCompleted;
     
     void Start()
     {
@@ -31,12 +32,11 @@ public class FloorManager : MonoBehaviour
         {
             CreateFirstFloor();
         }
-        
     }
 
     public void Ascend()
     {
-        if (floorList.Count > currentFloor)
+        if (floorList.Count-1 > currentFloor)
         {
             currentFloor++;
             player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
@@ -50,6 +50,16 @@ public class FloorManager : MonoBehaviour
         {
             currentFloor--;
             player.transform.position = floorList[currentFloor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
+            enemyManager.EnemyDeath(GameObject.FindWithTag("Enemy"));
+        }
+    }
+
+    public void ChangeFloor(int floor)
+    {
+        if (floor != currentFloor)
+        {
+            currentFloor = floor;
+            player.transform.position = floorList[floor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
             enemyManager.EnemyDeath(GameObject.FindWithTag("Enemy"));
         }
     }

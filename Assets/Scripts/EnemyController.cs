@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     EnemyManager enemyManager;
     [SerializeField] MonsterStats monsterStats;
     [SerializeField] PlayerStats playerStats;
+    public int enemyFloor;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class EnemyController : MonoBehaviour
     private void OnMouseDown()
     {
         enemyManager.TakeDamage(playerStats.damage,gameObject);
-        transform.DOShakeScale(0.1f,new Vector3(2.7f, 2.7f, 2.7f),0);
+        transform.DOShakeScale(0.5f,new Vector3(0.2f, 0.2f, 0.2f),0);
         //transform.DORewind();
     }
 }
