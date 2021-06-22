@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyController : MonoBehaviour
 {
@@ -17,5 +18,7 @@ public class EnemyController : MonoBehaviour
     private void OnMouseDown()
     {
         enemyManager.TakeDamage(playerStats.damage,gameObject);
+        transform.DOShakeScale(0.1f,new Vector3(2.7f, 2.7f, 2.7f),0);
+        //transform.DORewind();
     }
 }

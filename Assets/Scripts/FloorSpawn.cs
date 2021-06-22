@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class FloorSpawn : MonoBehaviour
 {
-    enum RoomType { Black, Red, Yellow, Blue };
-    [SerializeField] RoomType roomType;
+    public enum RoomType { Black, Red, Yellow, Blue };
+    public RoomType roomType;
     public Transform floorBottom;
     public Transform floorTop;
     public GameObject placeForPlayer;
     public Transform placeForEnemy;
+    public int floorAmount;
 }
