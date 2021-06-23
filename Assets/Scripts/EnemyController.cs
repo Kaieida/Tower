@@ -20,6 +20,5 @@ public class EnemyController : MonoBehaviour
     {
         enemyManager.TakeDamage(playerStats.damage,gameObject);
         transform.DOShakeScale(0.5f,new Vector3(0.2f, 0.2f, 0.2f),0);
-        //transform.DORewind();
     }
 }

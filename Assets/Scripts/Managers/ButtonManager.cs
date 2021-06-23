@@ -15,14 +15,9 @@ public class ButtonManager : MonoBehaviour
         SetLevelButtons();
     }
 
-    private void Update()
-    {
-        Debug.Log(enemyManager.maxCompletedLevel / 5);
-    }
-
     public void ChangeLevelButtonsRight()
     {
-        if (enemyManager.maxCompletedLevel / 5 >= levelRow+1)
+        if ((enemyManager.maxCompletedLevel - 1) /5>= levelRow+1)
         {
             levelRow++;
             SetLevelButtons();

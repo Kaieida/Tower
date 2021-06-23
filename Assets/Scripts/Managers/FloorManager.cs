@@ -60,7 +60,7 @@ public class FloorManager : MonoBehaviour
         {
             currentFloor = floor;
             player.transform.position = floorList[floor].GetComponent<FloorSpawn>().placeForPlayer.transform.position;
-            enemyManager.EnemyDeath(GameObject.FindWithTag("Enemy"));
+            enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
         }
     }
     

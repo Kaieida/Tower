@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] GameObject mainCanvas;
     [SerializeField] FloorManager floorManager;
     [SerializeField] ButtonManager buttonManager;
-
+    [SerializeField] Countdown countdown;
     public int maxCompletedLevel;
     private int currentHealth;
 
@@ -36,8 +36,8 @@ public class EnemyManager : MonoBehaviour
     {
         MaxCompletedLevel(obj.GetComponent<EnemyController>().enemyFloor+ 2);
         buttonManager.UpdateButtons();
-        Debug.Log(obj.GetComponent<EnemyController>().enemyFloor);
         Destroy(obj);
+        countdown.ResetCountdown();
         SpawnNewEnemy();
     }
 
@@ -53,5 +53,12 @@ public class EnemyManager : MonoBehaviour
         {
             maxCompletedLevel = floorLevel;
         }
+    }
+
+    public void RestartLevel(GameObject obj)
+    {
+        countdown.ResetCountdown();
+        Destroy(obj);
+        SpawnNewEnemy();
     }
 }
