@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdown: {fileID: 485036878}
-  time: 5
+  time: 31
   fTime: 0
   enemyManager: {fileID: 989302329}
 --- !u!1 &496776532
@@ -1769,10 +1769,10 @@ MonoBehaviour:
   healthSlider: {fileID: 1656856400}
   enemyPrefab: {fileID: 183833553228218696, guid: bbb78a453db75c84d8479f544c533ce7, type: 3}
   mainCanvas: {fileID: 348149063}
+  playerController: {fileID: 1218448341}
   floorManager: {fileID: 989302330}
   buttonManager: {fileID: 989302331}
   countdown: {fileID: 485036880}
-  maxCompletedLevel: 1
 --- !u!114 &989302330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1794,9 +1794,11 @@ MonoBehaviour:
   - {fileID: 2229347171509751971, guid: 0d9306e29b4fd8b4f9927488714d15e7, type: 3}
   - {fileID: 2229347171509751971, guid: e648fd6771421aa489c2ecf61cd13dc5, type: 3}
   player: {fileID: 1218448339}
-  loopAmounts: 0
+  playerController: {fileID: 1218448341}
   floorList: []
-  currentFloor: 0
+  positionInFloorList: 0
+  currentFloor: 1
+  maxCompletedFloor: 0
 --- !u!114 &989302331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2116,6 +2118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1218448340}
+  - component: {fileID: 1218448341}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -2147,6 +2150,19 @@ RectTransform:
   m_AnchoredPosition: {x: 400, y: -1050}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1218448341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218448339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3dd2dfadd0cee4fb895daf611f6261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevel: 1
 --- !u!1 &1219877762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2945,6 +2961,10 @@ PrefabInstance:
     - target: {fileID: 183833553228218703, guid: bbb78a453db75c84d8479f544c533ce7, type: 3}
       propertyPath: m_Offset.y
       value: 27.774643
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408407240581808732, guid: bbb78a453db75c84d8479f544c533ce7, type: 3}
+      propertyPath: enemyFloor
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbb78a453db75c84d8479f544c533ce7, type: 3}

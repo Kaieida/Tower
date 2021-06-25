@@ -8,11 +8,10 @@ public class EnemyController : MonoBehaviour
     EnemyManager enemyManager;
     [SerializeField] MonsterStats monsterStats;
     [SerializeField] PlayerStats playerStats;
-    public int enemyFloor;
 
     private void Start()
     {
-        enemyManager = GameObject.Find("Managers").GetComponent<EnemyManager>();
+        enemyManager = GameObject.Find("Managers").GetComponent<EnemyManager>(); 
         enemyManager.SetHealth(monsterStats.health);
     }
 

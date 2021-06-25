@@ -10,5 +10,6 @@ public class FloorSpawn : MonoBehaviour
     public Transform floorTop;
     public GameObject placeForPlayer;
     public Transform placeForEnemy;
+    public int thisFloor;
     public int floorAmount;
 }

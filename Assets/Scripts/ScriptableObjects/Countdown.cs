@@ -39,7 +39,7 @@ public class Countdown : MonoBehaviour
 
     public void ResetCountdown()
     {
-        time = 5;
-        fTime = 5;
+        time = 31;
+        fTime = 31;
     }
 }

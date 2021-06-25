@@ -17,7 +17,7 @@ public class ButtonManager : MonoBehaviour
 
     public void ChangeLevelButtonsRight()
     {
-        if ((enemyManager.maxCompletedLevel - 1) /5>= levelRow+1)
+        if ((floorManager.maxCompletedFloor) /5>= levelRow+1)
         {
             levelRow++;
             SetLevelButtons();
@@ -39,7 +39,7 @@ public class ButtonManager : MonoBehaviour
         {
             int level = (i + 1) + 5 * levelRow;
             levelButtons[i].onClick.RemoveAllListeners();
-            levelButtons[i].onClick.AddListener(delegate { floorManager.ChangeFloor(level-1); });
+            levelButtons[i].onClick.AddListener(delegate { floorManager.ChangeFloor(level); });
             levelButtons[i].GetComponentInChildren<Text>().text = level.ToString();
         }
         UpdateButtons();
@@ -50,7 +50,7 @@ public class ButtonManager : MonoBehaviour
         for (int i = 0; i < levelButtons.Length; i++)
         {
             int level = (i + 1) + 5 * levelRow;
-            if(level <= enemyManager.maxCompletedLevel)
+            if(level <= floorManager.maxCompletedFloor+1)
             {
                 levelButtons[i].interactable = true;
             }
