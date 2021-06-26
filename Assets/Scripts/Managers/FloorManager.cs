@@ -16,7 +16,6 @@ public class FloorManager : MonoBehaviour
     public int currentFloor;
     public int maxCompletedFloor;
     private Vector3 floorForEnemy;
-    int loopAmounts = 0;
 
     void Start()
     {
@@ -29,11 +28,6 @@ public class FloorManager : MonoBehaviour
         for (int i = 1; i <= floorsAmount; i++)
         {
             FloorAdjustment(nextFloor, floorType);
-        }
-        loopAmounts++;
-        if (loopAmounts < 3)
-        {
-            CreateFirstFloor();
         }
     }
 
@@ -91,27 +85,13 @@ public class FloorManager : MonoBehaviour
 
     private void InfiniteFloorGenerator()
     {
-        if (floorList[10].thisFloor == playerController.currentLevel)
+        if(playerController.currentLevel % 5 == 0)
         {
-            Debug.Log("executed");
-            MoveFloorsUP();
+            CreateFirstFloor();
         }
-    }
-
-    private void MoveFloorsUP()
-    {
-        FloorSpawn previousFloor = floorList[floorList.Count - 1];
-        floorList[0].thisFloor = previousFloor.thisFloor + 1;
-        floorList[0].transform.position = previousFloor.transform.position + (previousFloor.floorTop.position - previousFloor.floorBottom.position);
-        floorList.Insert(floorList.Count - 1, floorList[0]);
-        floorList.Remove(floorList[0]);
-        for (int i = 1; i < 5; i++)
+        else if(playerController.currentLevel % 5 == 1 && playerController.currentLevel != 1)
         {
-            previousFloor = floorList[i - 1];
-            floorList[i].thisFloor = previousFloor.thisFloor + 1;
-            floorList[i].transform.position = previousFloor.transform.position + (previousFloor.floorTop.position - previousFloor.floorBottom.position);
-            floorList.Insert(floorList.Count - 1, floorList[i]);
-            floorList.Remove(floorList[i]);
+            DeletePreviousFloors();
         }
     }
 
@@ -123,13 +103,23 @@ public class FloorManager : MonoBehaviour
         }
     }
 
+    public void DeletePreviousFloors()
+    {
+        Debug.Log("Calling deletion");
+        for(int i = 0; i < 5; i++)
+        {
+            Destroy(floorList[i].gameObject);
+            //floorList.Remove(floorList[i]);
+        }
+        floorList.RemoveRange(0, 5);
+    }
+
     public Vector3 FindNextFloor(int levelToSpawn)
     {
         for (int i = 0; i < floorList.Count; i++)
         {
             if (floorList[i].thisFloor == levelToSpawn)
             {
-                Debug.Log("Found");
                 floorForEnemy = floorList[i].placeForEnemy.position;
             }
         }
