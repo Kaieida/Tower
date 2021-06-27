@@ -1790,6 +1790,9 @@ MonoBehaviour:
   floorStart: {fileID: 1002204315}
   allFloors:
   - {fileID: 6600944813133631393, guid: ecac58785a2f12144941fc7d76a15f08, type: 3}
+  - {fileID: 4903955124736473309, guid: 7f2344595b0c52d4c86b39be15e24f82, type: 3}
+  - {fileID: 6719112992808309645, guid: 109cfedd2f0559d459301b4f517c0570, type: 3}
+  - {fileID: 7970700705033260912, guid: d5732e4a916032641907c5189e4a816a, type: 3}
   player: {fileID: 1218448339}
   playerController: {fileID: 1218448341}
   floorList: []

@@ -15,6 +15,8 @@ public class FloorManager : MonoBehaviour
     public int positionInFloorList;
     public int currentFloor;
     public int maxCompletedFloor;
+    private int floorQueue;
+    private int floorQueue2 = 2;
     private Vector3 floorForEnemy;
 
     void Start()
@@ -24,7 +26,7 @@ public class FloorManager : MonoBehaviour
 
     public void CreateFirstFloors()
     {
-        GameObject floorObject = Instantiate(allFloors[0], floorStart.position, Quaternion.identity, floorHolder.transform);
+        GameObject floorObject = Instantiate(allFloors[3], floorStart.position, Quaternion.identity, floorHolder.transform);
         FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
         floorObjectInfo.SetFloorLevel(currentFloor);
         floorList.Add(floorObjectInfo);
@@ -33,11 +35,11 @@ public class FloorManager : MonoBehaviour
 
     public Vector3 FindNextFloor(int floor)
     {
-        foreach(FloorSpawn obj in floorList)
+        foreach (FloorSpawn obj in floorList)
         {
-            foreach(FloorInfo infObj in obj.floorInfo)
+            foreach (FloorInfo infObj in obj.floorInfo)
             {
-                if(infObj.thisFloor == floor)
+                if (infObj.thisFloor == floor)
                 {
                     floorForEnemy = infObj.placeForEnemy.position;
                     return floorForEnemy;
@@ -115,7 +117,15 @@ public class FloorManager : MonoBehaviour
 
     private void NewFloorCreation()
     {
-        GameObject floorObject = Instantiate(allFloors[0], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
+        if (floorQueue >= 3)
+        {
+            floorQueue = 0;
+        }
+        else
+        {
+            floorQueue++;
+        }
+        GameObject floorObject = Instantiate(allFloors[floorQueue], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
         FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
         floorObjectInfo.SetFloorLevel(currentFloor);
         floorList.Add(floorObjectInfo);
@@ -131,57 +141,30 @@ public class FloorManager : MonoBehaviour
 
     private void DestroyPreviousLevels()
     {
-        if(floorList.Count >= 4)
+        while (floorList.Count > 3)
         {
-            Destroy(floorList[0]);
+            Destroy(floorList[0].gameObject);
             floorList.Remove(floorList[0]);
         }
     }
 
     private void CreateAdditionalFloor(int floor)
     {
-        if (floor%5==0 && !CheckIfFloorExist(floor+1))
+        if (floorQueue2 >= 3)
         {
-            GameObject floorObject = Instantiate(allFloors[0], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
+            floorQueue2 = 0;
+        }
+        else
+        {
+            floorQueue2++;
+        }
+
+        if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
+        {
+            GameObject floorObject = Instantiate(allFloors[floorQueue2], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
             FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
-            floorObjectInfo.SetFloorLevel(currentFloor+1);
+            floorObjectInfo.SetFloorLevel(currentFloor + 1);
             floorList.Add(floorObjectInfo);
         }
     }
-
-    /*
-    void FloorAdjustment()
-    {
-        /*FloorSpawn previousFloor = floorList[floorList.Count - 1];
-        floorType = Instantiate(allFloors[randomFloor], previousFloor.transform.position, Quaternion.identity, floorHolder.transform);
-
-        floorList.Add(floorType.GetComponent<FloorSpawn>());
-        floorType.GetComponent<FloorSpawn>().thisFloor = previousFloor.thisFloor + 1;
-
-        floorType.transform.position += previousFloor.floorTop.position - previousFloor.floorBottom.position;
-        return floorType;
-
-
-    }
-
-    private void InfiniteFloorGenerator()
-    {
-        if(playerController.currentLevel % 5 == 0)
-        {
-            CreateFirstFloor();
-        }
-        else if(playerController.currentLevel % 5 == 1 && playerController.currentLevel != 1)
-        {
-            DeletePreviousFloors();
-        }
-    }
-
-    public void DeletePreviousFloors()
-    {
-        for(int i = 0; i < 5; i++)
-        {
-            Destroy(floorList[i].gameObject);
-        }
-        floorList.RemoveRange(0, 5);
-    }*/
 }
