@@ -1789,16 +1789,13 @@ MonoBehaviour:
   enemyManager: {fileID: 989302329}
   floorStart: {fileID: 1002204315}
   allFloors:
-  - {fileID: 2229347171509751971, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
-  - {fileID: 2229347171509751971, guid: a77695b4483b6384b914f8823547bfaa, type: 3}
-  - {fileID: 2229347171509751971, guid: 0d9306e29b4fd8b4f9927488714d15e7, type: 3}
-  - {fileID: 2229347171509751971, guid: e648fd6771421aa489c2ecf61cd13dc5, type: 3}
+  - {fileID: 6600944813133631393, guid: ecac58785a2f12144941fc7d76a15f08, type: 3}
   player: {fileID: 1218448339}
   playerController: {fileID: 1218448341}
   floorList: []
   positionInFloorList: 0
   currentFloor: 1
-  maxCompletedFloor: 0
+  maxCompletedFloor: 99
 --- !u!114 &989302331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,7 +1849,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -320}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1016425375

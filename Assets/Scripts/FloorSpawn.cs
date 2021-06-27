@@ -4,12 +4,34 @@ using UnityEngine;
 
 public class FloorSpawn : MonoBehaviour
 {
-    public enum RoomType { Black, Red, Yellow, Blue };
-    public RoomType roomType;
     public Transform floorBottom;
     public Transform floorTop;
-    public GameObject placeForPlayer;
-    public Transform placeForEnemy;
-    public int thisFloor;
-    public int floorAmount;
+    public FloorInfo[] floorInfo;
+
+    public void SetFloorLevel(int floor)
+    {
+        int testing = floor % 5;
+        if (testing == 0)
+        {
+            floor -= + 4;
+            foreach (FloorInfo obj in floorInfo)
+            {
+                obj.thisFloor += floor;
+            }
+        }
+        else
+        {
+            floor -= + testing - 1;
+            foreach (FloorInfo obj in floorInfo)
+            {
+                obj.thisFloor += floor;
+            }
+        }
+        
+    }
+
+    /*public void SetCorrectFloor(int floor)
+    {
+
+    }*/
 }

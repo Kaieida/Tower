@@ -32,7 +32,7 @@ public class Countdown : MonoBehaviour
         }
         else
         {
-            enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
+            //enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
             //ResetCountdown();
         }
     }
