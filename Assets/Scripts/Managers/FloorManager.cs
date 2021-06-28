@@ -10,32 +10,43 @@ public class FloorManager : MonoBehaviour
     [SerializeField] List<GameObject> allFloors;
     [SerializeField] GameObject player;
     [SerializeField] PlayerController playerController;
+    [SerializeField] List<FloorSpawn> floorPool;
 
     public List<FloorSpawn> floorList;
     public int positionInFloorList;
+    public int previousFloor;
     public int currentFloor;
     public int maxCompletedFloor;
-    private int floorQueue;
-    private int floorQueue2 = 2;
     private Vector3 floorForEnemy;
+    private int cycleFloor;
+    private FloorSpawn floorToRemember;
 
     void Start()
     {
-        CreateFirstFloors();
+        SortFirstFloors();
     }
 
-    public void CreateFirstFloors()
+    private void SortFirstFloors()
     {
-        GameObject floorObject = Instantiate(allFloors[3], floorStart.position, Quaternion.identity, floorHolder.transform);
-        FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
-        floorObjectInfo.SetFloorLevel(currentFloor);
-        floorList.Add(floorObjectInfo);
+        for (int i = 0; i < floorPool.Count; i++)
+        {
+            if (i == 0)
+            {
+                floorPool[i].gameObject.transform.position = floorStart.position;
+                floorPool[i].SetFloorLevel(currentFloor);
+            }
+            else
+            {
+                floorPool[i].gameObject.transform.position += floorPool[i - 1].transform.position + floorPool[i - 1].floorTop.position - floorPool[i - 1].floorBottom.position;
+                floorPool[i].SetFloorLevel(currentFloor + 5 * i);
+            }
+        }
         ChangeFloor(currentFloor);
     }
 
     public Vector3 FindNextFloor(int floor)
     {
-        foreach (FloorSpawn obj in floorList)
+        foreach (FloorSpawn obj in floorPool)
         {
             foreach (FloorInfo infObj in obj.floorInfo)
             {
@@ -51,7 +62,7 @@ public class FloorManager : MonoBehaviour
 
     private bool CheckIfFloorExist(int floor)
     {
-        foreach (FloorSpawn obj in floorList)
+        foreach (FloorSpawn obj in floorPool)
         {
             foreach (FloorInfo infObj in obj.floorInfo)
             {
@@ -66,45 +77,26 @@ public class FloorManager : MonoBehaviour
 
     public void ChangeFloor(int floor)
     {
-        if (floor != playerController.currentLevel && CheckIfFloorExist(floor))
-        {
-            playerController.currentLevel = floor;
-            foreach (FloorSpawn obj in floorList)
-            {
-                foreach (FloorInfo infObj in obj.floorInfo)
-                {
-                    if (infObj.thisFloor == floor)
-                    {
-                        player.transform.position = infObj.placeForPlayer.transform.position;
-                        currentFloor = floor;
-                        break;
-                    }
-                }
-            }
-            enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
-        }
-        else if (floor != playerController.currentLevel && !CheckIfFloorExist(floor))
+        if (floor != playerController.currentLevel)
         {
             playerController.currentLevel = floor;
             currentFloor = floor;
-            NewFloorCreation();
-            foreach (FloorSpawn obj in floorList)
+            MovePoolUp(floor);
+            
+            foreach (FloorSpawn obj in floorPool)
             {
                 foreach (FloorInfo infObj in obj.floorInfo)
                 {
                     if (infObj.thisFloor == floor)
                     {
-                        player.transform.position = infObj.placeForPlayer.transform.position;
-                        currentFloor = floor;
+                        playerController.FloorJump(infObj.placeForPlayer.transform.position);
                         break;
                     }
                 }
             }
-
+            previousFloor = floor;
             enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
         }
-        CreateAdditionalFloor(floor);
-        DestroyPreviousLevels();
     }
 
     public void SetReachedFloor()
@@ -114,57 +106,102 @@ public class FloorManager : MonoBehaviour
             maxCompletedFloor = playerController.currentLevel;
         }
     }
-
-    private void NewFloorCreation()
+    private void MovePoolUp(int floor)
     {
-        if (floorQueue >= 3)
-        {
-            floorQueue = 0;
-        }
-        else
-        {
-            floorQueue++;
-        }
-        GameObject floorObject = Instantiate(allFloors[floorQueue], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
-        FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
-        floorObjectInfo.SetFloorLevel(currentFloor);
-        floorList.Add(floorObjectInfo);
-        ChangeFloor(currentFloor);
-    }
-
-    private Vector3 FloorAdjustment()
-    {
-        Vector3 pos = floorList[floorList.Count - 1].transform.position;
-        pos += floorList[floorList.Count - 1].floorTop.position - floorList[floorList.Count - 1].floorBottom.position;
-        return pos;
-    }
-
-    private void DestroyPreviousLevels()
-    {
-        while (floorList.Count > 3)
-        {
-            Destroy(floorList[0].gameObject);
-            floorList.Remove(floorList[0]);
-        }
-    }
-
-    private void CreateAdditionalFloor(int floor)
-    {
-        if (floorQueue2 >= 3)
-        {
-            floorQueue2 = 0;
-        }
-        else
-        {
-            floorQueue2++;
-        }
-
         if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
         {
-            GameObject floorObject = Instantiate(allFloors[floorQueue2], FloorAdjustment(), Quaternion.identity, floorHolder.transform);
-            FloorSpawn floorObjectInfo = floorObject.GetComponent<FloorSpawn>();
-            floorObjectInfo.SetFloorLevel(currentFloor + 1);
-            floorList.Add(floorObjectInfo);
+            MoveUp(floor);
         }
+        else if (floor % 5 == 1 && !CheckIfFloorExist(floor - 1))
+        {
+            MoveDown(floor);
+        }
+        else if (!CheckIfFloorExist(floor))
+        {
+            if(previousFloor > currentFloor)
+            {
+                for (int i = 0; i < floorPool.Count; i++)
+                {
+                    floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
+                    floorPool[floorPool.Count - 1].transform.position -= floorPool[0].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                    floorPool[floorPool.Count - 1].SetFloorLevel(floor - i * 5);
+                    floorPool.Insert(0, floorPool[floorPool.Count - 1]);
+                    floorPool.RemoveAt(floorPool.Count - 1);
+                }
+            }
+            else if (previousFloor < currentFloor)
+            {
+                for (int i = 0; i < floorPool.Count; i++)
+                {
+                    floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
+                    floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                    floorPool[0].SetFloorLevel(floor + i * 5);
+                    floorPool.Add(floorPool[0]);
+                    floorPool.Remove(floorPool[0]);
+                }
+            }
+        }
+    }
+
+    private void MoveUp(int floor)
+    {
+        for (int i = 0; i < floorPool.Count - 1; i++)
+        {
+            floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
+            floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+            floorPool[0].SetFloorLevel(floorPool[floorPool.Count - 1].floorInfo[4].thisFloor + 1);
+            floorPool.Add(floorPool[0]);
+            floorPool.Remove(floorPool[0]);
+        }
+        if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
+        {
+            for (int i = 0; i < floorPool.Count - 1; i++)
+            {
+                floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
+                floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                floorPool[0].SetFloorLevel(floorPool[floorPool.Count - 1].floorInfo[4].thisFloor + 1);
+                floorPool.Add(floorPool[0]);
+                floorPool.Remove(floorPool[0]);
+            }
+        }
+    }
+
+    private void MoveDown(int floor)
+    {
+        for (int i = 0; i < floorPool.Count - 1; i++)
+        {
+            floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
+            floorPool[floorPool.Count - 1].transform.position -= floorPool[0].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+            floorPool[floorPool.Count - 1].SetFloorLevel(floorPool[0].floorInfo[0].thisFloor - 1);
+            floorPool.Insert(0, floorPool[floorPool.Count - 1]);
+            floorPool.RemoveAt(floorPool.Count - 1);
+        }
+        if (floor % 5 == 1 && !CheckIfFloorExist(floor - 1))
+        {
+            for (int i = 0; i < floorPool.Count - 1; i++)
+            {
+                floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
+                floorPool[floorPool.Count - 1].transform.position -= floorPool[0].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                floorPool[floorPool.Count - 1].SetFloorLevel(floorPool[0].floorInfo[0].thisFloor - 1);
+                floorPool.Insert(0, floorPool[floorPool.Count - 1]);
+                floorPool.RemoveAt(floorPool.Count - 1);
+            }
+        }
+    }
+
+    private FloorSpawn SearchMaximumFloor()
+    {
+        foreach (FloorSpawn obj in floorPool)
+        {
+            foreach (FloorInfo infObj in obj.floorInfo)
+            {
+                if (infObj.thisFloor > cycleFloor)
+                {
+                    cycleFloor = infObj.thisFloor;
+                    floorToRemember = obj;
+                }
+            }
+        }
+        return floorToRemember;
     }
 }

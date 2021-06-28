@@ -10,6 +10,7 @@ public class FloorSpawn : MonoBehaviour
 
     public void SetFloorLevel(int floor)
     {
+        SetCorrectFloor();
         int testing = floor % 5;
         if (testing == 0)
         {
@@ -30,8 +31,11 @@ public class FloorSpawn : MonoBehaviour
         
     }
 
-    /*public void SetCorrectFloor(int floor)
+    public void SetCorrectFloor()
     {
-
-    }*/
+        for(int i = 0; i < floorInfo.Length; i++)
+        {
+            floorInfo[i].thisFloor = i;
+        }
+    }
 }
