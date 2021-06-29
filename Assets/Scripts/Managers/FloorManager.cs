@@ -18,8 +18,6 @@ public class FloorManager : MonoBehaviour
     public int currentFloor;
     public int maxCompletedFloor;
     private Vector3 floorForEnemy;
-    private int cycleFloor;
-    private FloorSpawn floorToRemember;
 
     void Start()
     {
@@ -81,7 +79,7 @@ public class FloorManager : MonoBehaviour
         {
             playerController.currentLevel = floor;
             currentFloor = floor;
-            MovePoolUp(floor);
+            MovePool(floor);
             
             foreach (FloorSpawn obj in floorPool)
             {
@@ -90,6 +88,7 @@ public class FloorManager : MonoBehaviour
                     if (infObj.thisFloor == floor)
                     {
                         playerController.FloorJump(infObj.placeForPlayer.transform.position);
+                        enemyManager.SpawnNewEnemyTesting(infObj);
                         break;
                     }
                 }
@@ -106,7 +105,7 @@ public class FloorManager : MonoBehaviour
             maxCompletedFloor = playerController.currentLevel;
         }
     }
-    private void MovePoolUp(int floor)
+    private void MovePool(int floor)
     {
         if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
         {
@@ -145,17 +144,20 @@ public class FloorManager : MonoBehaviour
 
     private void MoveUp(int floor)
     {
-        for (int i = 0; i < floorPool.Count - 1; i++)
+        if (!CheckIfFloorExist(floor))
         {
-            floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
-            floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
-            floorPool[0].SetFloorLevel(floorPool[floorPool.Count - 1].floorInfo[4].thisFloor + 1);
-            floorPool.Add(floorPool[0]);
-            floorPool.Remove(floorPool[0]);
+            for (int i = 0; i < floorPool.Count; i++)
+            {
+                floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
+                floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                floorPool[0].SetFloorLevel(floor + i * 5);
+                floorPool.Add(floorPool[0]);
+                floorPool.Remove(floorPool[0]);
+            }
         }
-        if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
+        else if (CheckIfFloorExist(floor))
         {
-            for (int i = 0; i < floorPool.Count - 1; i++)
+            for (int i = 0; i < floorPool.Count-1; i++)
             {
                 floorPool[0].transform.position = floorPool[floorPool.Count - 1].transform.position;
                 floorPool[0].transform.position += floorPool[floorPool.Count - 1].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
@@ -168,15 +170,19 @@ public class FloorManager : MonoBehaviour
 
     private void MoveDown(int floor)
     {
-        for (int i = 0; i < floorPool.Count - 1; i++)
+        if (!CheckIfFloorExist(floor))
         {
-            floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
-            floorPool[floorPool.Count - 1].transform.position -= floorPool[0].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
-            floorPool[floorPool.Count - 1].SetFloorLevel(floorPool[0].floorInfo[0].thisFloor - 1);
-            floorPool.Insert(0, floorPool[floorPool.Count - 1]);
-            floorPool.RemoveAt(floorPool.Count - 1);
+            Debug.Log("called");
+            for (int i = 0; i < floorPool.Count; i++)
+            {
+                floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
+                floorPool[floorPool.Count - 1].transform.position -= floorPool[0].floorTop.position - floorPool[floorPool.Count - 1].floorBottom.position;
+                floorPool[floorPool.Count-1].SetFloorLevel(floor - i * 5);
+                floorPool.Insert(0, floorPool[floorPool.Count - 1]);
+                floorPool.RemoveAt(floorPool.Count - 1);
+            }
         }
-        if (floor % 5 == 1 && !CheckIfFloorExist(floor - 1))
+        else if (CheckIfFloorExist(floor))
         {
             for (int i = 0; i < floorPool.Count - 1; i++)
             {
@@ -187,21 +193,5 @@ public class FloorManager : MonoBehaviour
                 floorPool.RemoveAt(floorPool.Count - 1);
             }
         }
-    }
-
-    private FloorSpawn SearchMaximumFloor()
-    {
-        foreach (FloorSpawn obj in floorPool)
-        {
-            foreach (FloorInfo infObj in obj.floorInfo)
-            {
-                if (infObj.thisFloor > cycleFloor)
-                {
-                    cycleFloor = infObj.thisFloor;
-                    floorToRemember = obj;
-                }
-            }
-        }
-        return floorToRemember;
     }
 }
