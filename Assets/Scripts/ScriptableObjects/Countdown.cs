@@ -9,6 +9,7 @@ public class Countdown : MonoBehaviour
     [SerializeField] int time;
     [SerializeField] float fTime;
     [SerializeField] EnemyManager enemyManager;
+    [SerializeField] FloorManager floorManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,14 +25,15 @@ public class Countdown : MonoBehaviour
 
     public void Timer()
     {
-        if (time != 0)
+        if (time != 0 && floorManager.maxCompletedFloor < floorManager.currentFloor)
         {
             fTime -= Time.deltaTime;
             time = (int)fTime;
             countdown.text = time.ToString();
         }
-        else
+        else if(time == 0)
         {
+            floorManager.GoFloorLower();
             //enemyManager.RestartLevel(GameObject.FindWithTag("Enemy"));
             //ResetCountdown();
         }

@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    [SerializeField] GameObject floorHolder;
     [SerializeField] EnemyManager enemyManager;
     [SerializeField] Transform floorStart;
-    [SerializeField] List<GameObject> allFloors;
     [SerializeField] GameObject player;
     [SerializeField] PlayerController playerController;
     [SerializeField] List<FloorSpawn> floorPool;
 
-    public List<FloorSpawn> floorList;
-    public int positionInFloorList;
     public int previousFloor;
     public int currentFloor;
     public int maxCompletedFloor;
@@ -88,7 +84,7 @@ public class FloorManager : MonoBehaviour
                     if (infObj.thisFloor == floor)
                     {
                         playerController.FloorJump(infObj.placeForPlayer.transform.position);
-                        enemyManager.SpawnNewEnemyTesting(infObj);
+                        enemyManager.SpawnNewEnemy();
                         break;
                     }
                 }
@@ -193,5 +189,10 @@ public class FloorManager : MonoBehaviour
                 floorPool.RemoveAt(floorPool.Count - 1);
             }
         }
+    }
+
+    public void GoFloorLower()
+    {
+        ChangeFloor(currentFloor - 1);
     }
 }

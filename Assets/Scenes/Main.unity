@@ -890,6 +890,7 @@ MonoBehaviour:
   time: 31
   fTime: 0
   enemyManager: {fileID: 989302329}
+  floorManager: {fileID: 989302330}
 --- !u!1 &496776532
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,14 +2012,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d38da34c95fc6e46a2965eec8fedff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorHolder: {fileID: 1843029491}
   enemyManager: {fileID: 989302329}
   floorStart: {fileID: 1002204315}
-  allFloors:
-  - {fileID: 6600944813133631393, guid: ecac58785a2f12144941fc7d76a15f08, type: 3}
-  - {fileID: 4903955124736473309, guid: 7f2344595b0c52d4c86b39be15e24f82, type: 3}
-  - {fileID: 6719112992808309645, guid: 109cfedd2f0559d459301b4f517c0570, type: 3}
-  - {fileID: 7970700705033260912, guid: d5732e4a916032641907c5189e4a816a, type: 3}
   player: {fileID: 1218448339}
   playerController: {fileID: 1218448341}
   floorPool:
@@ -2026,11 +2021,9 @@ MonoBehaviour:
   - {fileID: 803646770}
   - {fileID: 1487984968}
   - {fileID: 1170131119}
-  floorList: []
-  positionInFloorList: 0
   previousFloor: 0
-  currentFloor: 99
-  maxCompletedFloor: 99
+  currentFloor: 1
+  maxCompletedFloor: 0
 --- !u!114 &989302331
 MonoBehaviour:
   m_ObjectHideFlags: 0
