@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    [SerializeField] EnemyManager enemyManager;
     [SerializeField] Transform floorStart;
-    [SerializeField] GameObject player;
+    [SerializeField] Transform floorPanel;
+    [SerializeField] Transform healthPanel;
+    [SerializeField] Transform shopButton;
+    [SerializeField] EnemyManager enemyManager;
     [SerializeField] PlayerController playerController;
     [SerializeField] List<FloorSpawn> floorPool;
-
+    
     public int previousFloor;
     public int currentFloor;
     public int maxCompletedFloor;
-    private Vector3 floorForEnemy;
+    private Transform placeForEnemy;
 
     void Start()
     {
@@ -38,7 +40,7 @@ public class FloorManager : MonoBehaviour
         ChangeFloor(currentFloor);
     }
 
-    public Vector3 FindNextFloor(int floor)
+    public Transform FindNextFloor(int floor)
     {
         foreach (FloorSpawn obj in floorPool)
         {
@@ -46,12 +48,12 @@ public class FloorManager : MonoBehaviour
             {
                 if (infObj.thisFloor == floor)
                 {
-                    floorForEnemy = infObj.placeForEnemy.position;
-                    return floorForEnemy;
+                    placeForEnemy = infObj.placeForEnemy;
+                    return placeForEnemy;
                 }
             }
         }
-        return Vector3.zero;
+        return transform;
     }
 
     private bool CheckIfFloorExist(int floor)
@@ -84,6 +86,7 @@ public class FloorManager : MonoBehaviour
                     if (infObj.thisFloor == floor)
                     {
                         playerController.FloorJump(infObj.placeForPlayer.transform.position);
+                        SetInfoPanels(infObj);
                         enemyManager.SpawnNewEnemy();
                         break;
                     }
@@ -101,6 +104,7 @@ public class FloorManager : MonoBehaviour
             maxCompletedFloor = playerController.currentLevel;
         }
     }
+
     private void MovePool(int floor)
     {
         if (floor % 5 == 0 && !CheckIfFloorExist(floor + 1))
@@ -168,7 +172,6 @@ public class FloorManager : MonoBehaviour
     {
         if (!CheckIfFloorExist(floor))
         {
-            Debug.Log("called");
             for (int i = 0; i < floorPool.Count; i++)
             {
                 floorPool[floorPool.Count - 1].transform.position = floorPool[0].transform.position;
@@ -194,5 +197,12 @@ public class FloorManager : MonoBehaviour
     public void GoFloorLower()
     {
         ChangeFloor(currentFloor - 1);
+    }
+
+    public void SetInfoPanels(FloorInfo floor)
+    {
+        floorPanel.position = floor.placeForButtons.position;
+        healthPanel.position = floor.placeForHealth.position;
+        shopButton.position = floor.placeForShop.position;
     }
 }

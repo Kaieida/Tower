@@ -43,7 +43,7 @@ public class EnemyManager : MonoBehaviour
 
     public void SpawnNewEnemy()
     {
-        Instantiate(enemyPrefab, floorManager.FindNextFloor(floorManager.currentFloor), Quaternion.identity, mainCanvas.transform);
+        Instantiate(enemyPrefab, floorManager.FindNextFloor(floorManager.currentFloor).position, Quaternion.identity, mainCanvas.transform);
     }
 
     public void SpawnNewEnemyTesting(FloorInfo spawnPlace)

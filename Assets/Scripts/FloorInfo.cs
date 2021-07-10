@@ -7,4 +7,7 @@ public class FloorInfo : MonoBehaviour
     public int thisFloor;
     public Transform placeForPlayer;
     public Transform placeForEnemy;
+    public Transform placeForButtons;
+    public Transform placeForHealth;
+    public Transform placeForShop;
 }

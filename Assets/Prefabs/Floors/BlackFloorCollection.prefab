@@ -15,6 +15,9 @@ MonoBehaviour:
   thisFloor: 4
   placeForPlayer: {fileID: 5246560782471642199}
   placeForEnemy: {fileID: 4347829344358200372}
+  placeForButtons: {fileID: 0}
+  placeForHealth: {fileID: 0}
+  placeForShop: {fileID: 0}
 --- !u!1 &6600944813133631393
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1474
+      value: 1473
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -274,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4811
+      value: 4813
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -388,7 +391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6481
+      value: 6483
       objectReference: {fileID: 0}
     - target: {fileID: 2229347171509751970, guid: 8b223c12837e3544585923fc3ee445ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
