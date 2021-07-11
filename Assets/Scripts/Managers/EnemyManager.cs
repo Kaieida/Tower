@@ -36,6 +36,7 @@ public class EnemyManager : MonoBehaviour
     {
         floorManager.SetReachedFloor();
         buttonManager.UpdateButtons();
+
         Destroy(obj);
         countdown.ResetCountdown();
         SpawnNewEnemy();

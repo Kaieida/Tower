@@ -85,9 +85,10 @@ public class FloorManager : MonoBehaviour
                 {
                     if (infObj.thisFloor == floor)
                     {
-                        playerController.FloorJump(infObj.placeForPlayer.transform.position);
+                        //playerController.FloorJump(infObj.placeForPlayer.transform.position);
+                        StartCoroutine(playerController.FloorJumpCo(infObj.placeForPlayer.transform.position));
                         SetInfoPanels(infObj);
-                        enemyManager.SpawnNewEnemy();
+                        enemyManager.SpawnNewEnemyTesting(infObj);
                         break;
                     }
                 }

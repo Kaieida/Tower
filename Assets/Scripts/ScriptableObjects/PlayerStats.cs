@@ -6,4 +6,5 @@ using UnityEngine;
 public class PlayerStats : ScriptableObject
 {
     public int damage;
+    public int gold;
 }
